@@ -71,10 +71,9 @@ public class ConvertableToMapTest {
         record Person(long id, String name, LocalDate birthdate) {}
 
         var person = new Person(1L, "Victor", null);
-        var expectedMap = new LinkedHashMap<>();
-        expectedMap.put("id", person.id);
-        expectedMap.put("name", person.name);
-        expectedMap.put("birthdate", null);
+        var expectedMap = Map.of(
+                "id", person.id,
+                "name", person.name);
 
         var converter = new RecordConverter<Person>();
         var skipNullValues = true;

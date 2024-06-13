@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class ConvertableToMapTest {
+class ConvertableToMapTest {
 
     public static void main(String[] args) {
         System.out.printf("shouldToConvertRecordObjetToMap: %s \n", shouldToConvertRecordObjetToMap() ? "passed" : "failed");

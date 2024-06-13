@@ -77,7 +77,8 @@ public class ConvertableToMapTest {
         expectedMap.put("birthdate", null);
 
         var converter = new RecordConverter<Person>();
-        var result = converter.toMap(person, true);
+        var skipNullValues = true;
+        var result = converter.toMap(person, skipNullValues);
 
         return expectedMap.equals(result) && !result.containsKey("birthdate");
     }
@@ -92,7 +93,8 @@ public class ConvertableToMapTest {
         expectedMap.put("birthdate", null);
 
         var converter = new RecordConverter<Person>();
-        var result = converter.toMap(person, false);
+        var skipNullValues = false;
+        var result = converter.toMap(person, skipNullValues);
 
         return expectedMap.equals(result) && result.containsKey("birthdate") && Objects.isNull(result.get("birthdate"));
     }

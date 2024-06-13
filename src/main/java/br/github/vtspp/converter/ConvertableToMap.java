@@ -4,14 +4,36 @@ import br.github.vtspp.converter.exception.ConvertableToMapException;
 import br.github.vtspp.converter.exception.FailExtractMethodException;
 import br.github.vtspp.converter.util.ReflectionConverterUtil;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 abstract class ConvertableToMap<T> {
 
-    public abstract Map<String, Object> toMap(T obj, boolean withNullValues);
+    public Map<String, Object> toMap(T obj, boolean skipNullValues) {
+        Objects.requireNonNull(obj, "O objeto a ser convertido não pode ser nulo");
+
+        final var objToMap = new LinkedHashMap<String, Object>();
+        final var fields = obj.getClass().getDeclaredFields();
+
+        Arrays.stream(fields).forEach(field -> {
+            final var value = extractValue(obj, fieldNameByStrategy(field));
+
+            if (Objects.isNull(value) && skipNullValues)
+                return;
+
+            objToMap.put(field.getName(), value);
+        });
+
+        return objToMap;
+    }
+
+    protected abstract String fieldNameByStrategy(Field field);
 
     protected Method extractMethod(T obj, final String fieldName) {
         try {

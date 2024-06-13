@@ -27,8 +27,9 @@ public class ConvertableToMapTest {
                 "birthdate", person.birthdate);
 
         var converter = new RecordConverter<Person>();
+        var skipNullValues = true;
 
-        return expectedMap.equals(converter.toMap(person, true));
+        return expectedMap.equals(converter.toMap(person, skipNullValues));
     }
 
     static boolean shouldToConvertClassObjetToMap() {
@@ -63,8 +64,9 @@ public class ConvertableToMapTest {
                 "birthdate", person.birthdate);
 
         var converter = new ClassConverter<Person>();
+        var skipNullValues = true;
 
-        return expectedMap.equals(converter.toMap(person, true));
+        return expectedMap.equals(converter.toMap(person, skipNullValues));
     }
 
     static boolean shouldExcludeNullValuesWhenSkipNullValuesIsTrue() {
@@ -114,9 +116,10 @@ public class ConvertableToMapTest {
         var person = new Person(1L, "Victor", LocalDate.now());
 
         var converter = new ClassConverter<Person>();
+        var skipNullValues = true;
 
         try {
-            return converter.toMap(person, true) instanceof FailExtractMethodException;
+            return converter.toMap(person, skipNullValues) instanceof FailExtractMethodException;
         } catch (RuntimeException e) {
             return e instanceof FailExtractMethodException;
         }
